@@ -68,11 +68,13 @@
     return arr;
   };
 
+  var template = document.querySelector('template').content;
+  var pinTemplate = template.querySelector('.map__pin');
   var fragmentPin = document.createDocumentFragment();
 
   var renderPin = function (array) {
     for (var i = 0; i < array.length; i++) {
-      var pinElement = document.querySelector('.map__pin').cloneNode(true);
+      var pinElement = pinTemplate.cloneNode(true);
 
       pinElement.style.left = (array[i].location.x - PIN_WIDTH / 2) + 'px';
       pinElement.style.top = (array[i].location.y - PIN_HEIGHT) + 'px';
@@ -84,26 +86,38 @@
   };
 
   var defineOfferFeature = function (array, parent) {
-    parent.innerHTML = '';
-    for (var j = 0; j < array.length; j++) {
-      var feature = document.createElement('li');
-      feature.classList.add('feature');
-      feature.classList.add('feature--' + array[j]);
-      parent.appendChild(feature);
-    }
+    var featuresList = parent.querySelectorAll('.feature');
+    [].forEach.call(featuresList, function (elm) {
+      var featureInClassName = elm.className.split('--')[1];
+      if (array.indexOf(featureInClassName) === -1) {
+        elm.remove();
+      }
+    });
   };
 
   var defineOfferPictures = function (array, parent) {
+    var popupPictures = parent.querySelector('.popup__pictures');
+    var photoItem = popupPictures.querySelector('li');
+    var img = photoItem.querySelector('img');
     for (var j = 0; j < array.length; j++) {
-      var photo = document.createElement('li');
-      photo.innerHTML = '<img src="' + array[j] + '" width="100" height="70">';
-      parent.appendChild(photo);
+      if (j === 0) {
+        img.src = array[j];
+        img.width = 100;
+        img.height = 70;
+      } else {
+        var photoItemNew = photoItem.cloneNode(true);
+        var imgNew = photoItemNew.querySelector('img');
+        imgNew.src = array[j];
+        imgNew.width = 100;
+        imgNew.height = 70;
+        popupPictures.appendChild(photoItemNew);
+      }
     }
   };
 
   var map = document.querySelector('.map');
   var mapFiltersContainer = document.querySelector('.map__filters-container');
-  var mapCardTemplate = document.querySelector('template').content;
+  var mapCardTemplate = template.querySelector('.map__card');
   var fragmentCard = document.createDocumentFragment();
 
   var renderCard = function (array) {
@@ -116,8 +130,6 @@
     var i = 0;
 
     var cardElement = mapCardTemplate.cloneNode(true);
-    var popupFeatures = cardElement.querySelector('.popup__features');
-    var popupPictures = cardElement.querySelector('.popup__pictures');
 
     cardElement.querySelector('h3').textContent = array[i].offer.title;
     cardElement.querySelector('small').textContent = array[i].offer.address;
@@ -126,12 +138,12 @@
     cardElement.querySelector('p:nth-of-type(3)').textContent = array[i].offer.rooms + ' комнаты для ' + array[i].offer.guests + ' гостей';
     cardElement.querySelector('p:nth-of-type(4)').textContent = 'Заезд после ' + array[i].offer.checkin + ', выезд до ' + array[i].offer.checkout;
 
-    defineOfferFeature(array[i].offer.features, popupFeatures);
+    defineOfferFeature(array[i].offer.features, cardElement);
 
     cardElement.querySelector('p:nth-of-type(5)').textContent = array[i].offer.description;
     cardElement.querySelector('.popup__avatar').src = array[i].author.avatar;
 
-    defineOfferPictures(array[i].offer.photos, popupPictures);
+    defineOfferPictures(array[i].offer.photos, cardElement);
 
     fragmentCard.appendChild(cardElement);
     map.insertBefore(fragmentCard, mapFiltersContainer);
