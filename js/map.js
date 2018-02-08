@@ -78,7 +78,7 @@
 
       pinElement.style.left = (array[i].location.x - PIN_WIDTH / 2) + 'px';
       pinElement.style.top = (array[i].location.y - PIN_HEIGHT) + 'px';
-      pinElement. querySelector('img').src = array[i].author.avatar;
+      pinElement.querySelector('img').src = array[i].author.avatar;
 
       fragmentPin.appendChild(pinElement);
     }
