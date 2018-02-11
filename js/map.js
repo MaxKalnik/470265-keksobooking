@@ -59,9 +59,9 @@
       obj.offer.checkout = OFFER_CHECKOUTS[getRandomBetween(0, OFFER_CHECKOUTS.length - 1)];
       obj.offer.features = randomizeArray(OFFER_FEATURES);
       obj.offer.description = '';
-      obj.offer.photos = OFFER_PHOTO_URLS.sort(function () {
+      obj.offer.photos = (OFFER_PHOTO_URLS.sort(function () {
         return Math.random() - 0.5;
-      });
+      })).slice();
       obj.location.x = getRandomBetween(LOCATION_X_MIN, LOCATION_X_MAX);
       obj.location.y = getRandomBetween(LOCATION_Y_MIN, LOCATION_Y_MAX);
       obj.offer.address = obj.location.x + ', ' + obj.location.y;
@@ -152,8 +152,6 @@
   };
 
   var nearAds = generateSimilarAds(8);
-  // renderPin(nearAds);
-  // renderCard(nearAds);
 
   var noticeForm = document.querySelector('.notice__form');
   var disableForm = function (value) {
@@ -165,11 +163,29 @@
 
   disableForm(true);
 
+  var addPinClickListener = function () {
+    var allPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+    var addClickListener = function (pin, i) {
+      var index = i;
+      pin.addEventListener('click', function () {
+        renderCard(nearAds, index);
+      });
+    };
+
+    for (var i = 0; i < allPins.length; i++) {
+      var pin = allPins[i];
+      pin.id = i;
+      addClickListener(pin, i);
+    }
+  };
+
   var makeStateActive = function () {
     map.classList.remove('map--faded');
     noticeForm.classList.remove('notice__form--disabled');
     disableForm(false);
     renderPin(nearAds);
+    addPinClickListener();
+    mainPin.removeEventListener('mouseup', makeStateActive);
   };
 
   var adress = noticeForm.querySelector('#address');
@@ -184,32 +200,4 @@
   var mainPin = document.querySelector('.map__pin--main');
   mainPin.addEventListener('mouseup', makeStateActive);
   mainPin.addEventListener('mouseup', definePinPosition);
-
-  var allPins = document.querySelectorAll('.map__pin');
-  var pinContainer = document.querySelector('.map__pins');
-
-  // var renderCurrentCard = function (evt) {
-  //   if (evt.currentTarget.classList.contains('map__pin')) {
-  //     var index = allPins.indexOf(evt.currentTarget);
-  //     console.log(index);
-  //     renderCard(nearAds[index]);
-  //   }
-  // };
-  // pinContainer.addEventListener('click', renderCurrentCard, true);
-
-  var renderCurrentCard = function (evt) {
-    var allPins = document.querySelectorAll('.map__pin');
-    for (var i = 0; i < allPins.length; i++) {
-      allPins[i].id = i;
-    }
-    var index = evt.currentTarget.id;
-    renderCard(nearAds, index);
-  };
-
-  var allPins1 = document.querySelectorAll('.map__pin');
-  for (var i = 0; i < allPins.length; i++) {
-    allPins1[i].addEventListener('click', renderCurrentCard, true);
-  }
-  // pinContainer.addEventListener('click', renderCurrentCard, true);
-
 })();
