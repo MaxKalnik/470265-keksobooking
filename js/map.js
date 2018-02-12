@@ -17,6 +17,8 @@
   var LOCATION_Y_MAX = 500;
   var PIN_WIDTH = 62;
   var PIN_HEIGHT = 84;
+  var INITIAL_X = (LOCATION_X_MAX - LOCATION_X_MIN) / 2;
+  var INITIAL_Y = (LOCATION_Y_MAX - LOCATION_Y_MIN) / 2;
 
   var getRandomBetween = function (min, max) {
     return Math.round(Math.random() * (max - min) + min);
@@ -57,9 +59,9 @@
       obj.offer.checkout = OFFER_CHECKOUTS[getRandomBetween(0, OFFER_CHECKOUTS.length - 1)];
       obj.offer.features = randomizeArray(OFFER_FEATURES);
       obj.offer.description = '';
-      obj.offer.photos = OFFER_PHOTO_URLS.sort(function () {
+      obj.offer.photos = (OFFER_PHOTO_URLS.sort(function () {
         return Math.random() - 0.5;
-      });
+      })).slice();
       obj.location.x = getRandomBetween(LOCATION_X_MIN, LOCATION_X_MAX);
       obj.location.y = getRandomBetween(LOCATION_Y_MIN, LOCATION_Y_MAX);
       obj.offer.address = obj.location.x + ', ' + obj.location.y;
@@ -120,14 +122,14 @@
   var mapCardTemplate = template.querySelector('.map__card');
   var fragmentCard = document.createDocumentFragment();
 
-  var renderCard = function (array) {
+  var renderCard = function (array, index) {
     var offerType = {
       flat: 'Квартира',
       bungalo: 'Бунгало',
       house: 'Дом'
     };
 
-    var i = 0;
+    var i = index;
 
     var cardElement = mapCardTemplate.cloneNode(true);
 
@@ -150,8 +152,52 @@
   };
 
   var nearAds = generateSimilarAds(8);
-  renderPin(nearAds);
-  renderCard(nearAds);
 
-  map.classList.remove('map--faded');
+  var noticeForm = document.querySelector('.notice__form');
+  var disableForm = function (value) {
+    var fieldset = noticeForm.querySelectorAll('fieldset');
+    for (var i = 1; i < fieldset.length; i++) {
+      fieldset[i].disabled = value;
+    }
+  };
+
+  disableForm(true);
+
+  var addPinClickListener = function () {
+    var allPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+    var addClickListener = function (pin, i) {
+      var index = i;
+      pin.addEventListener('click', function () {
+        renderCard(nearAds, index);
+      });
+    };
+
+    for (var i = 0; i < allPins.length; i++) {
+      var pin = allPins[i];
+      pin.id = i;
+      addClickListener(pin, i);
+    }
+  };
+
+  var makeStateActive = function () {
+    map.classList.remove('map--faded');
+    noticeForm.classList.remove('notice__form--disabled');
+    disableForm(false);
+    renderPin(nearAds);
+    addPinClickListener();
+    mainPin.removeEventListener('mouseup', makeStateActive);
+  };
+
+  var adress = noticeForm.querySelector('#address');
+  adress.value = INITIAL_X + ', ' + INITIAL_Y;
+
+  var definePinPosition = function () {
+    var x = INITIAL_X - PIN_WIDTH / 2;
+    var y = INITIAL_Y - PIN_HEIGHT;
+    adress.value = x + ', ' + y;
+  };
+
+  var mainPin = document.querySelector('.map__pin--main');
+  mainPin.addEventListener('mouseup', makeStateActive);
+  mainPin.addEventListener('mouseup', definePinPosition);
 })();
