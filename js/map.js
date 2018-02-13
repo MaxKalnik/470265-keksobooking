@@ -165,14 +165,11 @@
 
   var noticeForm = document.querySelector('.notice__form');
   var disableForm = function (value) {
-    noticeForm.classList.remove('notice__form--disabled');
     var fieldset = noticeForm.querySelectorAll('fieldset');
     for (var i = 1; i < fieldset.length; i++) {
       fieldset[i].disabled = value;
     }
   };
-
-  disableForm(true);
 
   var addPinClickListener = function () {
     var allPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
@@ -192,6 +189,7 @@
 
   var makeStateActive = function () {
     map.classList.remove('map--faded');
+    noticeForm.classList.remove('notice__form--disabled');
     disableForm(false);
     renderPin(nearAds);
     addPinClickListener();
