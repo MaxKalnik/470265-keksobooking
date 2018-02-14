@@ -75,21 +75,19 @@
     fragmentCard.appendChild(card);
 
     if (mapCards.length > 0) {
-      map.replaceChild(fragmentCard, mapCards[0]);
+      document.querySelector('.map').replaceChild(fragmentCard, mapCards[0]);
     }
-    map.insertBefore(fragmentCard, mapFiltersContainer);
+    document.querySelector('.map').insertBefore(fragmentCard, mapFiltersContainer);
   };
 
-  var renderCard = function (obj) {
-
-    // create card
-    var cardElement = createCard();
-
-    // fill created Card
-    var card = fillCard(obj, cardElement);
-
-    // append filled card in DOM
-    appendCard(card);
-
+  window.card = {
+    renderCard: function (obj) {
+      // create card
+      var cardElement = createCard();
+      // fill created Card
+      var card = fillCard(obj, cardElement);
+      // append filled card in DOM
+      appendCard(card);
+    }
   };
 })();

@@ -4,9 +4,9 @@
   var template = document.querySelector('template').content;
 
   var definePinPosition = function () {
-    var x = INITIAL_PIN_X;
-    var y = INITIAL_PIN_Y;
-    adress.value = x + ', ' + y;
+    var x = window.data.INITIAL_PIN_X;
+    var y = window.data.INITIAL_PIN_Y;
+    return (x + ', ' + y);
   };
 
   var createPin = function () {
@@ -15,8 +15,8 @@
   };
 
   var fillPin = function (obj, pinTemplate) {
-    pinTemplate.style.left = (obj.location.x - PIN_WIDTH / 2) + 'px';
-    pinTemplate.style.top = (obj.location.y - PIN_HEIGHT) + 'px';
+    pinTemplate.style.left = (obj.location.x - window.data.PIN_WIDTH / 2) + 'px';
+    pinTemplate.style.top = (obj.location.y - window.data.PIN_HEIGHT) + 'px';
     pinTemplate.querySelector('img').src = obj.author.avatar;
     return pinTemplate;
   };
@@ -36,7 +36,7 @@
       // fill created pin
       var pin = fillPin(pinDataElement, pinTemplate);
       pin.addEventListener('click', function () {
-        renderCard(pinDataElement);
+        window.card.renderCard(pinDataElement);
       });
       return pin;
     });
