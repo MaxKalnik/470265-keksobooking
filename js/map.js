@@ -7,16 +7,16 @@
     map.classList.remove('map--faded');
     window.form.noticeForm.classList.remove('notice__form--disabled');
     window.form.disableForm(false);
-    window.form.defineAdressValue();
     window.pin.renderPin(window.data.nearAds);
-    window.pin.mainPin.removeEventListener('mouseup', makeStateActive);
+    mainPin.removeEventListener('mouseup', makeStateActive);
     resetButton.addEventListener('click', makeStateInactive);
     resetButton.addEventListener('click', removeAllPins);
   };
 
   window.form.setAdressDefaultValue();
-  // window.pin.mainPin.addEventListener('mouseup', makeStateActive);
-  window.pin.mainPin.addEventListener('mouseup', window.form.defineAdressValue);
+  var mainPin = document.querySelector('.map__pin--main');
+  mainPin.addEventListener('mouseup', makeStateActive);
+  mainPin.addEventListener('mouseup', window.form.defineAdressValue);
 
   var removeAllPins = function () {
     var parent = document.querySelector('.map__pins');
@@ -35,6 +35,7 @@
     if (cardActiveElement) {
       map.removeChild(cardActiveElement);
     }
-    window.pin.mainPin.addEventListener('mouseup', makeStateActive);
+    mainPin.addEventListener('mouseup', makeStateActive);
   };
 })();
+

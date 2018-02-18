@@ -70,7 +70,7 @@
       adress.value = window.pin.definePinPosition();
     },
     setAdressDefaultValue: function () {
-      adress.value = window.data.INITIAL_PIN_X + ', ' + window.data.INITIAL_PIN_Y;
+      adress.value = window.data.INITIAL_X + ', ' + window.data.INITIAL_Y;
     },
     disableForm: function (value) {
       var fieldset = window.form.noticeForm.querySelectorAll('fieldset');
