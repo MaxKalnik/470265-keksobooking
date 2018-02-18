@@ -4,6 +4,13 @@
   var noticeForm = document.querySelector('.notice__form');
   var adress = noticeForm.querySelector('#address');
 
+  var disableForm = function (value) {
+    var fieldset = noticeForm.querySelectorAll('fieldset');
+    for (var i = 1; i < fieldset.length; i++) {
+      fieldset[i].disabled = value;
+    }
+  };
+
   var setPriceInputMax = function () {
     var priceInput = noticeForm.querySelector('#price');
     var placeTypeInput = noticeForm.querySelector('#type');
@@ -31,7 +38,6 @@
     }
   };
 
-  // при разбитии на модули переделать на вариант с массивами
   var capacityValidate = function () {
     var roomNumber = document.querySelector('#room_number');
     var capacity = document.querySelector('#capacity');
@@ -54,17 +60,16 @@
     }
   };
 
-  var formValidation = function () {
+  var activateFormValidation = function () {
     setPriceInputMax();
     noticeForm.querySelector('#type').addEventListener('change', setPriceInputMax);
     document.querySelector('.form__element--timing').addEventListener('change', syncTiming, true);
     capacityValidate();
     document.querySelector('#room_number').addEventListener('change', capacityValidate);
   };
-  formValidation();
 
   window.form = {
-    noticeForm: noticeForm,
+    resetButton: noticeForm.querySelector('.form__reset'),
     adress: adress,
     defineAdressValue: function () {
       adress.value = window.pin.definePinPosition();
@@ -72,11 +77,15 @@
     setAdressDefaultValue: function () {
       adress.value = window.data.INITIAL_X + ', ' + window.data.INITIAL_Y;
     },
-    disableForm: function (value) {
-      var fieldset = window.form.noticeForm.querySelectorAll('fieldset');
-      for (var i = 1; i < fieldset.length; i++) {
-        fieldset[i].disabled = value;
-      }
+    makeFormActive: function () {
+      noticeForm.classList.remove('notice__form--disabled');
+      disableForm(false);
+      activateFormValidation();
+    },
+    makeFormInActive: function () {
+      noticeForm.classList.add('notice__form--disabled');
+      disableForm(true);
+      window.form.setAdressDefaultValue();
     }
   };
 })();

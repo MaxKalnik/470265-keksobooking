@@ -1,8 +1,6 @@
 'use strict';
 
 (function () {
-  var PIN_WIDTH = 62;
-  var PIN_HEIGHT = 84;
   var LOCATION_X_MIN = 300;
   var LOCATION_X_MAX = 900;
   var LOCATION_Y_MIN = 150;
@@ -19,8 +17,6 @@
   var OFFER_PHOTO_URLS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
   var INITIAL_X = (LOCATION_X_MAX - LOCATION_X_MIN) / 2;
   var INITIAL_Y = (LOCATION_Y_MAX - LOCATION_Y_MIN) / 2;
-  var INITIAL_PIN_X = INITIAL_X - PIN_WIDTH / 2;
-  var INITIAL_PIN_Y = INITIAL_Y - PIN_HEIGHT;
 
   var getRandomBetween = function (min, max) {
     return Math.round(Math.random() * (max - min) + min);
@@ -74,15 +70,7 @@
 
   window.data = {
     nearAds: generateSimilarAds(8),
-    LOCATION_X_MIN: LOCATION_X_MIN,
-    LOCATION_X_MAX: LOCATION_X_MAX,
-    LOCATION_Y_MIN: LOCATION_Y_MIN,
-    LOCATION_Y_MAX: LOCATION_Y_MAX,
-    INITIAL_PIN_X: INITIAL_PIN_X,
-    INITIAL_PIN_Y: INITIAL_PIN_Y,
     INITIAL_X: INITIAL_X,
-    INITIAL_Y: INITIAL_Y,
-    PIN_WIDTH: PIN_WIDTH,
-    PIN_HEIGHT: PIN_HEIGHT
+    INITIAL_Y: INITIAL_Y
   };
 })();

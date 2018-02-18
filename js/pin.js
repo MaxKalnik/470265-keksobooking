@@ -1,11 +1,17 @@
 'use strict';
 
 (function () {
+  var PIN_WIDTH = 62;
+  var PIN_HEIGHT = 84;
+  var INITIAL_PIN_X = window.data.INITIAL_X - PIN_WIDTH / 2;
+  var INITIAL_PIN_Y = window.data.INITIAL_Y - PIN_HEIGHT;
+
   var template = document.querySelector('template').content;
+  var mainPin = document.querySelector('.map__pin--main');
 
   var definePinPosition = function () {
-    var x = window.data.INITIAL_PIN_X;
-    var y = window.data.INITIAL_PIN_Y;
+    var x = INITIAL_PIN_X;
+    var y = INITIAL_PIN_Y;
     return (x + ', ' + y);
   };
 
@@ -15,8 +21,8 @@
   };
 
   var fillPin = function (obj, pinTemplate) {
-    pinTemplate.style.left = (obj.location.x - window.data.PIN_WIDTH / 2) + 'px';
-    pinTemplate.style.top = (obj.location.y - window.data.PIN_HEIGHT) + 'px';
+    pinTemplate.style.left = (obj.location.x - PIN_WIDTH / 2) + 'px';
+    pinTemplate.style.top = (obj.location.y - PIN_HEIGHT) + 'px';
     pinTemplate.querySelector('img').src = obj.author.avatar;
     return pinTemplate;
   };
@@ -41,11 +47,11 @@
       return pin;
     });
 
-    // append pins to DOM
     appendPin(pins);
   };
   window.pin = {
     definePinPosition: definePinPosition,
-    renderPin: renderPin
+    renderPin: renderPin,
+    mainPin: mainPin
   };
 })();

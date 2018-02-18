@@ -3,20 +3,13 @@
   var map = document.querySelector('.map');
 
   var makeStateActive = function () {
-    var resetButton = window.form.noticeForm.querySelector('.form__reset');
     map.classList.remove('map--faded');
-    window.form.noticeForm.classList.remove('notice__form--disabled');
-    window.form.disableForm(false);
+    window.form.makeFormActive();
     window.pin.renderPin(window.data.nearAds);
-    mainPin.removeEventListener('mouseup', makeStateActive);
-    resetButton.addEventListener('click', makeStateInactive);
-    resetButton.addEventListener('click', removeAllPins);
+    window.pin.mainPin.removeEventListener('mouseup', makeStateActive);
+    window.form.resetButton.addEventListener('click', makeStateInactive);
+    window.form.resetButton.addEventListener('click', removeAllPins);
   };
-
-  window.form.setAdressDefaultValue();
-  var mainPin = document.querySelector('.map__pin--main');
-  mainPin.addEventListener('mouseup', makeStateActive);
-  mainPin.addEventListener('mouseup', window.form.defineAdressValue);
 
   var removeAllPins = function () {
     var parent = document.querySelector('.map__pins');
@@ -28,14 +21,15 @@
 
   var makeStateInactive = function () {
     map.classList.add('map--faded');
-    window.form.noticeForm.classList.add('notice__form--disabled');
-    window.form.disableForm(true);
-    window.form.setAdressDefaultValue();
+    window.form.makeFormInActive();
     var cardActiveElement = document.querySelector('.map__card');
     if (cardActiveElement) {
       map.removeChild(cardActiveElement);
     }
-    mainPin.addEventListener('mouseup', makeStateActive);
+    window.pin.mainPin.addEventListener('mouseup', makeStateActive);
+  };
+
+  window.map = {
+    makeStateActive: makeStateActive
   };
 })();
-
