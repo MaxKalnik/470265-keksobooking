@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var ADRESS_INITIAL_X = 528;
+  var ADRESS_INITIAL_Y = 375;
   var noticeForm = document.querySelector('.notice__form');
   var adress = noticeForm.querySelector('#address');
 
@@ -71,21 +73,26 @@
   window.form = {
     resetButton: noticeForm.querySelector('.form__reset'),
     adress: adress,
-    defineAdressValue: function () {
-      adress.value = window.pin.definePinPosition();
+    defineAdressValue: function (x, y) {
+      adress.value = Math.round(x) + ', ' + Math.round(y);
     },
-    setAdressDefaultValue: function () {
-      adress.value = window.data.INITIAL_X + ', ' + window.data.INITIAL_Y;
+    setAdressDefaultValue: function (value) {
+      if (value === 'active') {
+        adress.value = ADRESS_INITIAL_X + ', ' + (ADRESS_INITIAL_Y + window.pin.PIN_POINTER_HEIGHT);
+      } else if (value === 'default') {
+        adress.value = ADRESS_INITIAL_X + ', ' + ADRESS_INITIAL_Y;
+      }
     },
     makeFormActive: function () {
       noticeForm.classList.remove('notice__form--disabled');
+      window.form.setAdressDefaultValue('active');
       disableForm(false);
       activateFormValidation();
     },
     makeFormInActive: function () {
       noticeForm.classList.add('notice__form--disabled');
       disableForm(true);
-      window.form.setAdressDefaultValue();
+      window.form.setAdressDefaultValue('default');
     }
   };
 })();
