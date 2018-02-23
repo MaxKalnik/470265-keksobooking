@@ -5,7 +5,9 @@
   var makeStateActive = function () {
     map.classList.remove('map--faded');
     window.form.makeFormActive();
-    window.pin.renderPin(window.data.nearAds);
+    window.backend.load(function (data) {
+      window.pin.renderPin(data);
+    }, window.backend.onError);
     window.pin.mainPin.removeEventListener('mouseup', makeStateActive);
     window.form.resetButton.addEventListener('click', makeStateInactive);
     window.form.resetButton.addEventListener('click', removeAllPins);

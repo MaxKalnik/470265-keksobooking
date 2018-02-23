@@ -62,6 +62,11 @@
     }
   };
 
+  var noticeFormReset = function () {
+    noticeForm.reset();
+    window.form.setAdressDefaultValue('default');
+  };
+
   var activateFormValidation = function () {
     setPriceInputMax();
     noticeForm.querySelector('#type').addEventListener('change', setPriceInputMax);
@@ -69,6 +74,14 @@
     capacityValidate();
     document.querySelector('#room_number').addEventListener('change', capacityValidate);
   };
+
+  noticeForm.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(noticeForm), function () {
+      noticeFormReset();
+      window.pin.movePinToInitial();
+    }, window.backend.onError);
+    evt.preventDefault();
+  });
 
   window.form = {
     resetButton: noticeForm.querySelector('.form__reset'),
@@ -91,8 +104,8 @@
     },
     makeFormInActive: function () {
       noticeForm.classList.add('notice__form--disabled');
+      noticeFormReset();
       disableForm(true);
-      window.form.setAdressDefaultValue('default');
     }
   };
 })();

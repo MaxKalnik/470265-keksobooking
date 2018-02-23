@@ -20,14 +20,23 @@
     return Math.round(Math.random() * (max - min) + min);
   };
 
+  var shuffleArray = function (array) {
+    var newArray = array.slice();
+    for (var i = newArray.length - 1; i >= 0; i--) {
+      var j = getRandomBetween(0, newArray.length - 1);
+      var temp = newArray[i];
+      newArray[i] = newArray[j];
+      newArray[j] = temp;
+    }
+    return newArray;
+  };
+
   var randomizeArray = function (array) {
     var index = getRandomBetween(0, array.length);
-    var newArray = array.slice();
-    newArray.sort(function () {
-      return Math.random() - 0.5;
-    });
+    var newArray = shuffleArray(array.slice());
+
     if (index === 0) {
-      array.splice(index + 1, newArray.length - index);
+      newArray.splice(index + 1, newArray.length - index);
     } else {
       newArray.splice(index, newArray.length - index);
     }
@@ -55,9 +64,7 @@
       obj.offer.checkout = OFFER_CHECKOUTS[getRandomBetween(0, OFFER_CHECKOUTS.length - 1)];
       obj.offer.features = randomizeArray(OFFER_FEATURES);
       obj.offer.description = '';
-      obj.offer.photos = (OFFER_PHOTO_URLS.sort(function () {
-        return Math.random() - 0.5;
-      })).slice();
+      obj.offer.photos = shuffleArray(OFFER_PHOTO_URLS);
       obj.location.x = getRandomBetween(LOCATION_X_MIN, LOCATION_X_MAX);
       obj.location.y = getRandomBetween(LOCATION_Y_MIN, LOCATION_Y_MAX);
       obj.offer.address = obj.location.x + ', ' + obj.location.y;

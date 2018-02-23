@@ -104,6 +104,7 @@
 
     appendPin(pins);
   };
+
   window.pin = {
     renderPin: renderPin,
     mainPin: mainPin,
