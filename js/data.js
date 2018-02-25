@@ -72,8 +72,4 @@
     }
     return arr;
   };
-
-  window.data = {
-    nearAds: generateSimilarAds(8)
-  };
 })();

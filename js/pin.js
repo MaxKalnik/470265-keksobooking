@@ -4,8 +4,8 @@
   var PIN_WIDTH = 65;
   var PIN_HEIGHT = 65;
   var PIN_POINTER_HEIGHT = 22;
-  var PIN_LEFT_INITIAL = '50%';
-  var PIN_TOP_INITIAL = '375px';
+  var PIN_TOP_LIMIT = 150;
+  var PIN_BOTTOM_LIMIT = 650;
 
   var template = document.querySelector('template').content;
   var mainPin = document.querySelector('.map__pin--main');
@@ -17,53 +17,67 @@
       y: targetEvt.clientY + pageYOffset
     };
 
-    if (targetEvt.clientX >= obj.right - PIN_WIDTH) {
-      coords.x = obj.right - PIN_WIDTH + pageXOffset;
+    if (targetEvt.clientX + pageXOffset >= obj.right - PIN_WIDTH / 2) {
+      coords.x = obj.right - PIN_WIDTH / 2 + pageXOffset;
     }
-    if (targetEvt.clientX <= obj.left + PIN_WIDTH) {
-      coords.x = obj.left + PIN_WIDTH + pageXOffset;
+    if (targetEvt.clientX + pageXOffset <= obj.left + PIN_WIDTH / 2) {
+      coords.x = obj.left + PIN_WIDTH / 2 + pageXOffset;
     }
-    if (targetEvt.clientY >= obj.bottom - PIN_HEIGHT) {
-      coords.y = obj.bottom - PIN_HEIGHT + pageYOffset;
+
+    if (targetEvt.clientY + pageYOffset >= PIN_BOTTOM_LIMIT - PIN_POINTER_HEIGHT) {
+      coords.y = PIN_BOTTOM_LIMIT - PIN_POINTER_HEIGHT;
     }
-    if (targetEvt.clientY <= obj.top + PIN_HEIGHT) {
-      coords.y = obj.top + PIN_HEIGHT + pageYOffset;
+    if (targetEvt.clientY + pageYOffset <= PIN_TOP_LIMIT - PIN_POINTER_HEIGHT) {
+      coords.y = PIN_TOP_LIMIT - PIN_POINTER_HEIGHT;
     }
     return coords;
   };
 
-  mainPin.addEventListener('mousedown', function (evt) {
-    var startCoords = {
-      x: evt.clientX + pageXOffset,
-      y: evt.clientY + pageYOffset
+  var getCoords = function (elem) {
+    var box = elem.getBoundingClientRect();
+    return {
+      top: box.top + pageYOffset,
+      left: box.left + pageXOffset,
+      width: box.width,
+      height: box.height
     };
-    var parentNode = document.querySelector('.map__pins');
+  };
 
-    var onMouseMove = function (moveEvt) {
-      var moveCoords = getRestrictedCoords(moveEvt, parentNode);
-      var shifted = {
+  var mapPins = document.querySelector('.map__pins');
+
+  mainPin.addEventListener('mousedown', function (evt) {
+    var shiftX = evt.clientX + pageXOffset - (getCoords(mainPin).left + getCoords(mainPin).width / 2);
+    var shiftY = evt.clientY + pageYOffset - (getCoords(mainPin).top + getCoords(mainPin).height / 2);
+
+    var startCoords = {
+      x: evt.clientX + pageXOffset - shiftX,
+      y: evt.clientY + pageYOffset - shiftY
+    };
+
+    var defineShiftedCoords = function (targetEvt, parent) {
+      var moveCoords = getRestrictedCoords(targetEvt, parent);
+      return {
         x: startCoords.x - moveCoords.x,
         y: startCoords.y - moveCoords.y
       };
+    };
+
+    var onMouseMove = function (moveEvt) {
+      var shifted = defineShiftedCoords(moveEvt, mapPins);
 
       mainPin.style.left = (mainPin.offsetLeft - shifted.x) + 'px';
       mainPin.style.top = (mainPin.offsetTop - shifted.y) + 'px';
 
-      if (document.querySelector('.map').classList.contains('map--faded')) {
-        window.form.defineAdressValue((mainPin.offsetLeft - shifted.x), (mainPin.offsetTop - shifted.y));
-      } else {
-        window.form.defineAdressValue((mainPin.offsetLeft - shifted.x), (mainPin.offsetTop - shifted.y + PIN_POINTER_HEIGHT));
-      }
+      window.form.defineAdressValue(mainPin.offsetLeft - shifted.x, mainPin.offsetTop - shifted.y);
 
-      startCoords = {
-        x: moveCoords.x,
-        y: moveCoords.y
-      };
+      startCoords = getRestrictedCoords(moveEvt, mapPins);
     };
 
-    var onMouseUp = function () {
+    var onMouseUp = function (upEvt) {
+      var shiftedUp = defineShiftedCoords(upEvt, mapPins);
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
+      window.form.defineAdressValue(mainPin.offsetLeft - shiftedUp.x, mainPin.offsetTop - shiftedUp.y);
     };
 
     document.addEventListener('mousemove', onMouseMove);
@@ -92,16 +106,13 @@
 
   var renderPin = function (pinData) {
     var pins = pinData.map(function (pinDataElement) {
-      // create pin
       var pinTemplate = createPin();
-      // fill created pin
       var pin = fillPin(pinDataElement, pinTemplate);
       pin.addEventListener('click', function () {
         window.card.renderCard(pinDataElement);
       });
       return pin;
     });
-
     appendPin(pins);
   };
 
@@ -110,8 +121,9 @@
     mainPin: mainPin,
     PIN_POINTER_HEIGHT: PIN_POINTER_HEIGHT,
     movePinToInitial: function () {
-      mainPin.style.left = PIN_LEFT_INITIAL;
-      mainPin.style.top = PIN_TOP_INITIAL;
-    }
+      mainPin.style.left = '';
+      mainPin.style.top = '';
+    },
+    mapPins: mapPins
   };
 })();

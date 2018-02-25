@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  var ADRESS_INITIAL_X = 528;
   var ADRESS_INITIAL_Y = 375;
   var noticeForm = document.querySelector('.notice__form');
   var adress = noticeForm.querySelector('#address');
@@ -87,13 +86,17 @@
     resetButton: noticeForm.querySelector('.form__reset'),
     adress: adress,
     defineAdressValue: function (x, y) {
-      adress.value = Math.round(x) + ', ' + Math.round(y);
+      if (document.querySelector('.map').classList.contains('map--faded')) {
+        adress.value = Math.round(x) + ', ' + Math.round(y);
+      } else {
+        adress.value = Math.round(x) + ', ' + (Math.round(y) + window.pin.PIN_POINTER_HEIGHT);
+      }
     },
     setAdressDefaultValue: function (value) {
       if (value === 'active') {
-        adress.value = ADRESS_INITIAL_X + ', ' + (ADRESS_INITIAL_Y + window.pin.PIN_POINTER_HEIGHT);
+        adress.value = Math.floor(window.pin.mapPins.getBoundingClientRect().width / 2) + ', ' + (ADRESS_INITIAL_Y + window.pin.PIN_POINTER_HEIGHT);
       } else if (value === 'default') {
-        adress.value = ADRESS_INITIAL_X + ', ' + ADRESS_INITIAL_Y;
+        adress.value = Math.floor(window.pin.mapPins.getBoundingClientRect().width / 2) + ', ' + ADRESS_INITIAL_Y;
       }
     },
     makeFormActive: function () {
