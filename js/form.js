@@ -87,9 +87,9 @@
     adress: adress,
     defineAdressValue: function (x, y) {
       if (document.querySelector('.map').classList.contains('map--faded')) {
-        adress.value = Math.round(x) + ', ' + Math.round(y);
-      } else {
         adress.value = Math.round(x) + ', ' + (Math.round(y) + window.pin.PIN_POINTER_HEIGHT);
+      } else {
+        adress.value = Math.round(x) + ', ' + Math.round(y);
       }
     },
     setAdressDefaultValue: function (value) {
