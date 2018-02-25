@@ -22,6 +22,7 @@
   var makeStateInactive = function () {
     map.classList.add('map--faded');
     window.form.makeFormInActive();
+    window.pin.movePinToInitial();
     var cardActiveElement = document.querySelector('.map__card');
     if (cardActiveElement) {
       map.removeChild(cardActiveElement);
