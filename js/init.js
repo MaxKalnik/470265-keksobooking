@@ -22,7 +22,7 @@
     }
     window.pin.mainPin.addEventListener('mouseup', makeStateActive);
   };
-
+  window.form.disableForm(true);
   window.form.setAdressDefaultValue('default');
   window.pin.mainPin.addEventListener('mouseup', makeStateActive);
 })();

@@ -99,6 +99,7 @@
         adress.value = Math.floor(window.pin.mapPins.getBoundingClientRect().width / 2) + ', ' + ADRESS_INITIAL_Y;
       }
     },
+    disableForm: disableForm,
     makeFormActive: function () {
       noticeForm.classList.remove('notice__form--disabled');
       window.form.setAdressDefaultValue('active');
