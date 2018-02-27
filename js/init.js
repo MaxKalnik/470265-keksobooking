@@ -1,11 +1,15 @@
 'use strict';
 (function () {
   var onMainPinMousedown = function () {
-    document.addEventListener('mousemove', function () {
+    var onMainPinMousemove = function () {
       makeStateActive();
-    });
+      document.removeEventListener('mousemove', onMainPinMousemove);
+    };
+    document.addEventListener('mousemove', onMainPinMousemove);
+
     window.pin.mainPin.addEventListener('mouseup', function () {
       makeStateActive();
+      document.removeEventListener('mousemove', onMainPinMousemove);
     });
   };
 
@@ -15,6 +19,7 @@
     window.backend.load(function (data) {
       window.pin.renderPin(data);
     }, window.backend.onError);
+    window.popup.closePopupHandler();
     window.pin.mainPin.removeEventListener('mousedown', onMainPinMousedown);
     window.form.resetButton.addEventListener('click', makeStateInactive);
     window.form.resetButton.addEventListener('click', window.map.removeAllPins);
