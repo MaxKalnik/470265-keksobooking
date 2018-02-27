@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var OFFER_PIC_WIDTH = 95;
+  var OFFER_PIC_HEIGHT = 70;
   var template = document.querySelector('template').content;
 
   var defineOfferFeature = function (array, parent) {
@@ -20,22 +22,28 @@
 
   var defineOfferPictures = function (array, parent) {
     var popupPictures = parent.querySelector('.popup__pictures');
+    if (array.length > 4) {
+      popupPictures.style = 'height: 145px; overflow-y: scroll';
+    }
+    var setImgAttr = function (inputImg, inputSrc) {
+      inputImg.src = inputSrc;
+      inputImg.width = OFFER_PIC_WIDTH;
+      inputImg.height = OFFER_PIC_HEIGHT;
+    };
+    var fragment = document.createDocumentFragment();
     var photoItem = popupPictures.querySelector('li');
     var img = photoItem.querySelector('img');
     for (var j = 0; j < array.length; j++) {
       if (j === 0) {
-        img.src = array[j];
-        img.width = 100;
-        img.height = 70;
+        setImgAttr(img, array[j]);
       } else {
         var photoItemNew = photoItem.cloneNode(true);
         var imgNew = photoItemNew.querySelector('img');
-        imgNew.src = array[j];
-        imgNew.width = 100;
-        imgNew.height = 70;
-        popupPictures.appendChild(photoItemNew);
+        setImgAttr(imgNew, array[j]);
+        fragment.appendChild(photoItemNew);
       }
     }
+    popupPictures.appendChild(fragment);
   };
 
   var createCard = function () {
