@@ -5,6 +5,9 @@
     ESC: 27,
     ENTER: 13
   };
+  var DEBOUNCE_TIMEOUT = 300;
+  var lastTimeout;
+
   window.utils = {
     onEscPress: function (evt, callback) {
       if (evt.keyCode === KEYCODES.ESC) {
@@ -15,6 +18,12 @@
       if (evt.keyCode === KEYCODES.ENTER) {
         callback();
       }
+    },
+    debounce: function (func) {
+      if (lastTimeout) {
+        clearTimeout(lastTimeout);
+      }
+      lastTimeout = setTimeout(func, DEBOUNCE_TIMEOUT);
     }
   };
 })();

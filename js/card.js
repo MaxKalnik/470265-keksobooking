@@ -5,23 +5,29 @@
   var OFFER_PIC_HEIGHT = 70;
   var template = document.querySelector('template').content;
 
+  var checkElement = function (obj, node) {
+    if (!obj) {
+      node.parentNode.removeChild(node);
+      return false;
+    }
+    return true;
+  };
+
   var defineOfferFeature = function (array, parent) {
     var features = parent.querySelector('.popup__features');
-    if (array.length > 0) {
-      var featuresList = parent.querySelectorAll('.feature');
-      [].forEach.call(featuresList, function (elm) {
-        var featureInClassName = elm.className.split('--')[1];
-        if (array.indexOf(featureInClassName) === -1) {
-          elm.remove();
-        }
-      });
-    } else {
-      parent.removeChild(features);
-    }
+    checkElement(array.length, features);
+    var featuresList = parent.querySelectorAll('.feature');
+    [].forEach.call(featuresList, function (elm) {
+      var featureInClassName = elm.className.split('--')[1];
+      if (array.indexOf(featureInClassName) === -1) {
+        elm.remove();
+      }
+    });
   };
 
   var defineOfferPictures = function (array, parent) {
     var popupPictures = parent.querySelector('.popup__pictures');
+    checkElement(array.length, popupPictures);
     if (array.length > 4) {
       popupPictures.style = 'height: 145px; overflow-y: scroll';
     }
@@ -54,7 +60,7 @@
   var fillCard = function (cardData, cardTemplate) {
     var offerType = {
       flat: 'Квартира',
-      bungalo: 'Бунгало',
+      bungalo: 'Сарай',
       house: 'Дом'
     };
 
@@ -67,7 +73,9 @@
 
     defineOfferFeature(cardData.offer.features, cardTemplate);
 
-    cardTemplate.querySelector('p:nth-of-type(5)').textContent = cardData.offer.description;
+    if (checkElement(cardData.offer.description, cardTemplate.querySelector('p:nth-of-type(5)'))) {
+      cardTemplate.querySelector('p:nth-of-type(5)').textContent = cardData.offer.description;
+    }
     cardTemplate.querySelector('.popup__avatar').src = cardData.author.avatar;
 
     defineOfferPictures(cardData.offer.photos, cardTemplate);

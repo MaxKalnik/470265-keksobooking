@@ -2,6 +2,7 @@
 
 (function () {
   var ADRESS_INITIAL_Y = 375;
+
   var noticeForm = document.querySelector('.notice__form');
   var adress = noticeForm.querySelector('#address');
 
@@ -74,17 +75,11 @@
     document.querySelector('#room_number').addEventListener('change', capacityValidate);
   };
 
-  noticeForm.addEventListener('submit', function (evt) {
-    window.backend.save(new FormData(noticeForm), function () {
-      noticeFormReset();
-      window.pin.movePinToInitial();
-    }, window.backend.onError);
-    evt.preventDefault();
-  });
-
   window.form = {
+    noticeForm: noticeForm,
     resetButton: noticeForm.querySelector('.form__reset'),
     adress: adress,
+    noticeFormReset: noticeFormReset,
     defineAdressValue: function (x, y) {
       if (document.querySelector('.map').classList.contains('map--faded')) {
         adress.value = Math.round(x) + ', ' + (Math.round(y) + window.pin.PIN_POINTER_HEIGHT);

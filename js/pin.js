@@ -98,7 +98,7 @@
 
   var appendPin = function (pins) {
     var fragmentPin = document.createDocumentFragment();
-    for (var i = 0; i < pins.length; i++) {
+    for (var i = 0; i < 4; i++) {
       fragmentPin.appendChild(pins[i]);
     }
     document.querySelector('.map__pins').appendChild(fragmentPin);
@@ -110,6 +110,7 @@
       var pin = fillPin(pinDataElement, pinTemplate);
       pin.addEventListener('click', function () {
         window.card.renderCard(pinDataElement);
+        window.popup.addPopupCloseHandler();
       });
       return pin;
     });
