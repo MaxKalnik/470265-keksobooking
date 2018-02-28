@@ -55,10 +55,10 @@
     };
 
     var defineShiftedCoords = function (targetEvt, parent) {
-      var moveCoords = getRestrictedCoords(targetEvt, parent);
+      var currentCoords = getRestrictedCoords(targetEvt, parent);
       return {
-        x: startCoords.x - moveCoords.x,
-        y: startCoords.y - moveCoords.y
+        x: startCoords.x - currentCoords.x,
+        y: startCoords.y - currentCoords.y
       };
     };
 
@@ -74,6 +74,7 @@
     };
 
     var onMouseUp = function (upEvt) {
+      startCoords = getRestrictedCoords(upEvt, mapPins);
       var shiftedUp = defineShiftedCoords(upEvt, mapPins);
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);

@@ -81,11 +81,7 @@
     adress: adress,
     noticeFormReset: noticeFormReset,
     defineAdressValue: function (x, y) {
-      if (document.querySelector('.map').classList.contains('map--faded')) {
-        adress.value = Math.round(x) + ', ' + (Math.round(y) + window.pin.PIN_POINTER_HEIGHT);
-      } else {
-        adress.value = Math.round(x) + ', ' + Math.round(y);
-      }
+      adress.value = Math.round(x) + ', ' + (Math.round(y) + window.pin.PIN_POINTER_HEIGHT);
     },
     setAdressDefaultValue: function (value) {
       if (value === 'active') {

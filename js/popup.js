@@ -1,7 +1,7 @@
 'use strict';
 (function () {
+  var popup = document.querySelector('.popup');
   var closePopup = function () {
-    var popup = document.querySelector('.popup');
     popup.style.visibility = 'hidden';
   };
   window.popup = {
@@ -17,6 +17,7 @@
       };
       document.addEventListener('keydown', closePopupEsc, {once: true});
     },
-    closePopup: closePopup
+    closePopup: closePopup,
+    popupElement: popup
   };
 })();

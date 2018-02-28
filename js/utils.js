@@ -5,7 +5,7 @@
     ESC: 27,
     ENTER: 13
   };
-  var DEBOUNCE_TIMEOUT = 300;
+  var DEBOUNCE_TIMEOUT = 500;
   var lastTimeout;
 
   window.utils = {
