@@ -1,9 +1,12 @@
 'use strict';
 (function () {
-  var popup = document.querySelector('.popup');
   var closePopup = function () {
-    popup.style.visibility = 'hidden';
+    var popup = document.querySelector('.popup');
+    if (popup) {
+      popup.style.visibility = 'hidden';
+    }
   };
+
   window.popup = {
     addPopupCloseHandler: function () {
       var popupCloseBtn = document.querySelector('.popup__close');
@@ -17,7 +20,6 @@
       };
       document.addEventListener('keydown', closePopupEsc, {once: true});
     },
-    closePopup: closePopup,
-    popupElement: popup
+    closePopup: closePopup
   };
 })();

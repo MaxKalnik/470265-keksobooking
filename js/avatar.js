@@ -1,10 +1,11 @@
 'use strict';
 
 (function () {
-  var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+  var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png', 'svg'];
 
-  var fileChooser = window.form.noticeForm.querySelector('#avatar');
-  var preview = window.form.noticeForm.querySelector('.notice__preview img');
+  var fileChooser = document.querySelector('#avatar');
+  var preview = document.querySelector('.notice__preview img');
+  var previewDafaultSrc = preview.src;
 
   fileChooser.addEventListener('change', function () {
     var file = fileChooser.files[0];
@@ -20,5 +21,11 @@
       });
       reader.readAsDataURL(file);
     }
+
+    window.avatar = {
+      clearPreview: function () {
+        preview.src = previewDafaultSrc;
+      }
+    };
   });
 })();

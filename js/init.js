@@ -82,9 +82,7 @@
     window.pin.renderPin(arr.sort(function (left, right) {
       return getRank(right) - getRank(left);
     }));
-    if (window.popup.popupElement) {
-      window.popup.closePopup();
-    }
+    window.popup.closePopup();
   };
 
   var addSelectOnChange = function (arg) {

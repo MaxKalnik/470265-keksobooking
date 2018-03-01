@@ -65,6 +65,9 @@
   var noticeFormReset = function () {
     noticeForm.reset();
     window.form.setAdressDefaultValue('default');
+    activateFormValidation();
+    window.map.showMapFilters(false);
+    window.avatar.clearPreview();
   };
 
   var activateFormValidation = function () {
