@@ -24,11 +24,11 @@
       coords.x = containerCoords.left + PIN_WIDTH / 2 + pageXOffset;
     }
 
-    if (evt.clientY + pageYOffset >= PIN_BOTTOM_LIMIT) {
-      coords.y = PIN_BOTTOM_LIMIT;
+    if (evt.clientY + pageYOffset >= PIN_BOTTOM_LIMIT - PIN_HEIGHT - PIN_POINTER_HEIGHT) {
+      coords.y = PIN_BOTTOM_LIMIT - PIN_HEIGHT - PIN_POINTER_HEIGHT;
     }
-    if (evt.clientY + pageYOffset <= PIN_TOP_LIMIT) {
-      coords.y = PIN_TOP_LIMIT;
+    if (evt.clientY + pageYOffset <= PIN_TOP_LIMIT - PIN_HEIGHT - PIN_POINTER_HEIGHT) {
+      coords.y = PIN_TOP_LIMIT - PIN_HEIGHT - PIN_POINTER_HEIGHT;
     }
     return coords;
   };
