@@ -99,7 +99,7 @@
 
   var appendPin = function (pins) {
     var fragmentPin = document.createDocumentFragment();
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < pins.length && i < 5; i++) {
       fragmentPin.appendChild(pins[i]);
     }
     document.querySelector('.map__pins').appendChild(fragmentPin);

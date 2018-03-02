@@ -18,6 +18,7 @@
 
       var closePopupEsc = function (evt) {
         window.utils.onEscPress(evt, closePopup);
+        document.removeEventListener('keydown', closePopupEsc);
       };
       document.addEventListener('keydown', closePopupEsc);
     },

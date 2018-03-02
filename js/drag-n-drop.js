@@ -28,9 +28,11 @@
         dragEl.style.opacity = '1';
       };
 
-      popupPictures.addEventListener('dragstart', onDragstart);
-      popupPictures.addEventListener('dragover', onDragOver, false);
-      popupPictures.addEventListener('dragend', onDragEnd, false);
+      if (popupPictures) {
+        popupPictures.addEventListener('dragstart', onDragstart);
+        popupPictures.addEventListener('dragover', onDragOver, false);
+        popupPictures.addEventListener('dragend', onDragEnd, false);
+      }
     }
   };
 })();

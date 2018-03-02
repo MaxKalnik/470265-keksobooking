@@ -21,6 +21,9 @@
       } else {
         mapFilters.style.opacity = filterStates.hidden;
       }
+    },
+    resetMapFilters: function () {
+      mapFilters.reset();
     }
   };
 })();

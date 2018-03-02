@@ -80,6 +80,12 @@
     document.querySelector('#room_number').addEventListener('change', validateCapacity);
   };
 
+  var deactivateFormValidation = function () {
+    noticeForm.querySelector('#type').removeEventListener('change', setPriceInputMax);
+    document.querySelector('.form__element--timing').removeEventListener('change', syncTiming, true);
+    document.querySelector('#room_number').removeEventListener('change', validateCapacity);
+  };
+
   window.form = {
     noticeForm: noticeForm,
     resetButton: noticeForm.querySelector('.form__reset'),
@@ -106,6 +112,7 @@
       noticeForm.classList.add('notice__form--disabled');
       resetNoticeForm();
       disableForm(true);
+      deactivateFormValidation();
     }
   };
 })();

@@ -4,9 +4,9 @@
   var onMainPinMousedown = function () {
     var active = false;
     var onMainPinMousemove = function () {
+      document.removeEventListener('mousemove', onMainPinMousemove);
       makeStateActive();
       active = true;
-      document.removeEventListener('mousemove', onMainPinMousemove);
     };
     document.addEventListener('mousemove', onMainPinMousemove);
 
@@ -23,7 +23,11 @@
     'price': '',
     'rooms': '',
     'guest': '',
-    'featuresList': []
+    'featuresList': [],
+    'typeFlag': true,
+    'priceFlag': true,
+    'roomsFlag': true,
+    'guestsFlag': true
   };
 
   var PRICE_VALUES = {
@@ -49,15 +53,15 @@
   var getRank = function (elem) {
     var rank = 0;
     if (elem.offer.type === filterValues.type) {
-      rank += 2;
-    }
-    if (checkPrice(elem.offer.price) === filterValues.price) {
-      rank += 2;
-    }
-    if (elem.offer.rooms === +filterValues.rooms) {
       rank += 1;
     }
-    if (elem.offer.guests === +filterValues.guests) {
+    if (checkPrice(elem.offer.price) === filterValues.price) {
+      rank += 1;
+    }
+    if (elem.offer.rooms === +filterValues.rooms && +filterValues.rooms !== 0) {
+      rank += 1;
+    }
+    if (elem.offer.guests === +filterValues.guests && +filterValues.guests !== 0) {
       rank += 1;
     }
     for (var i = 0; i < filterValues.featuresList.length; i++) {
@@ -70,6 +74,8 @@
     return rank;
   };
 
+  var minRank = 0;
+
   var update = function () {
     window.popup.closePopup();
     var arr = adsData.slice();
@@ -81,43 +87,81 @@
     };
     deleteAds();
 
-    window.pin.renderPin(arr.sort(function (left, right) {
-      return getRank(right) - getRank(left);
+    window.pin.renderPin(arr.filter(function (elem) {
+      return getRank(elem) >= minRank;
     }));
   };
 
-  var addSelectOnChange = function (arg) {
+  var toggleSelectOnChange = function (arg, boolFlag) {
     var node = document.querySelector('#housing-' + arg);
-    node.addEventListener('change', function () {
+    var onChange = function () {
       if (node.value === 'any') {
-        filterValues[arg + ''] = true;
+        filterValues[arg + ''] = 'any';
+        minRank -= 1;
+        filterValues[arg + 'Flag'] = true;
       } else {
         filterValues[arg + ''] = node.value;
+        if (filterValues[arg + 'Flag']) {
+          minRank += 1;
+          filterValues[arg + 'Flag'] = false;
+        }
       }
       window.utils.debounce(update);
-    });
+    };
+    if (boolFlag) {
+      node.addEventListener('change', onChange);
+    } else {
+      node.removeEventListener('change', onChange);
+    }
   };
 
-  addSelectOnChange('type');
-  addSelectOnChange('price');
-  addSelectOnChange('rooms');
-  addSelectOnChange('guests');
-
   var features = document.querySelector('#housing-features');
-  features.addEventListener('change', function (evt) {
+  var featuresOnChange = function (evt) {
     if (evt.target.type === 'checkbox') {
       if (evt.target.checked) {
         filterValues.featuresList.push(evt.target.value);
+        minRank += 1;
       } else {
         filterValues.featuresList.splice(filterValues.featuresList.indexOf(evt.target.value), 1);
+        minRank -= 1;
       }
     }
     window.utils.debounce(update);
-  });
+  };
+
+  var activateFiltering = function () {
+    toggleSelectOnChange('type', true);
+    toggleSelectOnChange('price', true);
+    toggleSelectOnChange('rooms', true);
+    toggleSelectOnChange('guests', true);
+    features.addEventListener('change', featuresOnChange);
+  };
+
+  var deactivateFiltering = function () {
+    toggleSelectOnChange('type', false);
+    toggleSelectOnChange('price', false);
+    toggleSelectOnChange('rooms', false);
+    toggleSelectOnChange('guests', false);
+    features.removeEventListener('change', featuresOnChange);
+    window.map.resetMapFilters();
+    minRank = 0;
+    filterValues = {
+      'type': '',
+      'price': '',
+      'rooms': '',
+      'guest': '',
+      'featuresList': [],
+      'typeFlag': true,
+      'priceFlag': true,
+      'roomsFlag': true,
+      'guestsFlag': true
+    };
+  };
 
   var onSuccessLoad = function (data) {
     adsData = data.slice();
     window.pin.renderPin(adsData);
+    activateFiltering();
     window.map.showMapFilters(true);
   };
 
@@ -133,6 +177,7 @@
   var makeStateInactive = function () {
     window.map.mapElement.classList.add('map--faded');
     window.map.removeAllPins();
+    deactivateFiltering();
     window.form.makeFormInActive();
     window.pin.movePinToInitial();
     var cardActiveElement = document.querySelector('.map__card');
