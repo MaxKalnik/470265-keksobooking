@@ -1,4 +1,5 @@
 'use strict';
+
 (function () {
   var onMainPinMousedown = function () {
     var active = false;
@@ -48,10 +49,10 @@
   var getRank = function (elem) {
     var rank = 0;
     if (elem.offer.type === filterValues.type) {
-      rank += 1;
+      rank += 2;
     }
     if (checkPrice(elem.offer.price) === filterValues.price) {
-      rank += 1;
+      rank += 2;
     }
     if (elem.offer.rooms === +filterValues.rooms) {
       rank += 1;
@@ -70,6 +71,7 @@
   };
 
   var update = function () {
+    window.popup.closePopup();
     var arr = adsData.slice();
     var deleteAds = function () {
       var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
@@ -82,7 +84,6 @@
     window.pin.renderPin(arr.sort(function (left, right) {
       return getRank(right) - getRank(left);
     }));
-    window.popup.closePopup();
   };
 
   var addSelectOnChange = function (arg) {
@@ -151,7 +152,7 @@
     });
     window.form.noticeForm.addEventListener('submit', function (evt) {
       window.backend.save(new FormData(window.form.noticeForm), function () {
-        window.form.noticeFormReset();
+        window.form.resetNoticeForm();
         makeStateInactive();
       }, window.backend.onError);
       evt.preventDefault();

@@ -1,4 +1,5 @@
 'use strict';
+
 (function () {
 
   var KEYCODES = {
@@ -6,6 +7,7 @@
     ENTER: 13
   };
   var DEBOUNCE_TIMEOUT = 500;
+
   var lastTimeout;
 
   window.utils = {

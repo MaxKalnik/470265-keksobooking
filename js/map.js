@@ -1,4 +1,5 @@
 'use strict';
+
 (function () {
   var filterStates = {
     visible: '1',
@@ -14,8 +15,8 @@
         parent.removeChild(allPins[i]);
       }
     },
-    showMapFilters: function (value) {
-      if (value) {
+    showMapFilters: function (boolFlag) {
+      if (boolFlag) {
         mapFilters.style.opacity = filterStates.visible;
       } else {
         mapFilters.style.opacity = filterStates.hidden;

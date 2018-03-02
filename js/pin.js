@@ -5,30 +5,30 @@
   var PIN_HEIGHT = 65;
   var PIN_POINTER_HEIGHT = 22;
   var PIN_TOP_LIMIT = 150;
-  var PIN_BOTTOM_LIMIT = 650;
+  var PIN_BOTTOM_LIMIT = 500;
 
   var template = document.querySelector('template').content;
   var mainPin = document.querySelector('.map__pin--main');
 
-  var getRestrictedCoords = function (targetEvt, parent) {
-    var obj = parent.getBoundingClientRect();
+  var getRestrictedCoords = function (evt, canvas) {
+    var containerCoords = canvas.getBoundingClientRect();
     var coords = {
-      x: targetEvt.clientX + pageXOffset,
-      y: targetEvt.clientY + pageYOffset
+      x: evt.clientX + pageXOffset,
+      y: evt.clientY + pageYOffset
     };
 
-    if (targetEvt.clientX + pageXOffset >= obj.right - PIN_WIDTH / 2) {
-      coords.x = obj.right - PIN_WIDTH / 2 + pageXOffset;
+    if (evt.clientX + pageXOffset >= containerCoords.right - PIN_WIDTH / 2) {
+      coords.x = containerCoords.right - PIN_WIDTH / 2 + pageXOffset;
     }
-    if (targetEvt.clientX + pageXOffset <= obj.left + PIN_WIDTH / 2) {
-      coords.x = obj.left + PIN_WIDTH / 2 + pageXOffset;
+    if (evt.clientX + pageXOffset <= containerCoords.left + PIN_WIDTH / 2) {
+      coords.x = containerCoords.left + PIN_WIDTH / 2 + pageXOffset;
     }
 
-    if (targetEvt.clientY + pageYOffset >= PIN_BOTTOM_LIMIT - PIN_POINTER_HEIGHT) {
-      coords.y = PIN_BOTTOM_LIMIT - PIN_POINTER_HEIGHT;
+    if (evt.clientY + pageYOffset >= PIN_BOTTOM_LIMIT) {
+      coords.y = PIN_BOTTOM_LIMIT;
     }
-    if (targetEvt.clientY + pageYOffset <= PIN_TOP_LIMIT - PIN_POINTER_HEIGHT) {
-      coords.y = PIN_TOP_LIMIT - PIN_POINTER_HEIGHT;
+    if (evt.clientY + pageYOffset <= PIN_TOP_LIMIT) {
+      coords.y = PIN_TOP_LIMIT;
     }
     return coords;
   };
@@ -54,8 +54,8 @@
       y: evt.clientY + pageYOffset - shiftY
     };
 
-    var defineShiftedCoords = function (targetEvt, parent) {
-      var currentCoords = getRestrictedCoords(targetEvt, parent);
+    var defineShiftedCoords = function (ev, canvas) {
+      var currentCoords = getRestrictedCoords(ev, canvas);
       return {
         x: startCoords.x - currentCoords.x,
         y: startCoords.y - currentCoords.y
@@ -90,10 +90,10 @@
     return pinTemplate.cloneNode(true);
   };
 
-  var fillPin = function (obj, pinTemplate) {
-    pinTemplate.style.left = (obj.location.x - PIN_WIDTH / 2) + 'px';
-    pinTemplate.style.top = (obj.location.y - PIN_HEIGHT) + 'px';
-    pinTemplate.querySelector('img').src = obj.author.avatar;
+  var fillPin = function (pinData, pinTemplate) {
+    pinTemplate.style.left = (pinData.location.x - PIN_WIDTH / 2) + 'px';
+    pinTemplate.style.top = (pinData.location.y - PIN_HEIGHT) + 'px';
+    pinTemplate.querySelector('img').src = pinData.author.avatar;
     return pinTemplate;
   };
 
@@ -126,6 +126,8 @@
       mainPin.style.left = '';
       mainPin.style.top = '';
     },
-    mapPins: mapPins
+    mapPins: mapPins,
+    PIN_HEIGHT: PIN_HEIGHT,
+    PIN_WIDTH: PIN_WIDTH
   };
 })();
