@@ -8,7 +8,7 @@
       active = true;
       document.removeEventListener('mousemove', onMainPinMousemove);
     };
-    document.addEventListener('mousemove', onMainPinMousemove, {once: true});
+    document.addEventListener('mousemove', onMainPinMousemove);
 
     window.pin.mainPin.addEventListener('mouseup', function () {
       if (!active) {

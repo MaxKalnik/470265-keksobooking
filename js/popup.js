@@ -13,13 +13,13 @@
       var popupCloseBtn = document.querySelector('.popup__close');
       popupCloseBtn.addEventListener('click', function () {
         closePopup();
-        document.removeEventListener('keydown', closePopupEsc, {once: true});
+        document.removeEventListener('keydown', closePopupEsc);
       });
 
       var closePopupEsc = function (evt) {
         window.utils.onEscPress(evt, closePopup);
       };
-      document.addEventListener('keydown', closePopupEsc, {once: true});
+      document.addEventListener('keydown', closePopupEsc);
     },
     closePopup: closePopup
   };
