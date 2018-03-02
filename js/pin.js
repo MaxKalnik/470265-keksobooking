@@ -111,6 +111,7 @@
       var pin = fillPin(pinDataElement, pinTemplate);
       pin.addEventListener('click', function () {
         window.card.renderCard(pinDataElement);
+        window.dragNDrop.popupImages();
         window.popup.addPopupCloseHandler();
       });
       return pin;

@@ -36,6 +36,7 @@
       inputImg.src = inputSrc;
       inputImg.width = OFFER_PIC_WIDTH;
       inputImg.height = OFFER_PIC_HEIGHT;
+      inputImg.draggable = true;
     };
     var fragment = document.createDocumentFragment();
     var photoItem = popupPictures.querySelector('li');
