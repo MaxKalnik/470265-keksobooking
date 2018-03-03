@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var filterStates = {
+  var FILTER_STATES = {
     visible: '1',
     hidden: '0'
   };
@@ -17,9 +17,9 @@
     },
     showMapFilters: function (boolFlag) {
       if (boolFlag) {
-        mapFilters.style.opacity = filterStates.visible;
+        mapFilters.style.opacity = FILTER_STATES.visible;
       } else {
-        mapFilters.style.opacity = filterStates.hidden;
+        mapFilters.style.opacity = FILTER_STATES.hidden;
       }
     },
     resetMapFilters: function () {
