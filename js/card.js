@@ -3,43 +3,51 @@
 (function () {
   var OFFER_PIC_WIDTH = 95;
   var OFFER_PIC_HEIGHT = 70;
+
   var template = document.querySelector('template').content;
 
-  var defineOfferFeature = function (array, parent) {
-    var features = parent.querySelector('.popup__features');
-    if (array.length > 0) {
-      var featuresList = parent.querySelectorAll('.feature');
-      [].forEach.call(featuresList, function (elm) {
-        var featureInClassName = elm.className.split('--')[1];
-        if (array.indexOf(featureInClassName) === -1) {
-          elm.remove();
-        }
-      });
-    } else {
-      parent.removeChild(features);
+  var checkElement = function (element, elementContainer) {
+    if (!element) {
+      elementContainer.parentNode.removeChild(elementContainer);
+      return false;
     }
+    return true;
   };
 
-  var defineOfferPictures = function (array, parent) {
-    var popupPictures = parent.querySelector('.popup__pictures');
-    if (array.length > 4) {
+  var defineOfferFeature = function (element, elementParent) {
+    var features = elementParent.querySelector('.popup__features');
+    checkElement(element.length, features);
+    var featuresList = elementParent.querySelectorAll('.feature');
+    [].forEach.call(featuresList, function (elem) {
+      var featureInClassName = elem.className.split('--')[1];
+      if (element.indexOf(featureInClassName) === -1) {
+        elem.remove();
+      }
+    });
+  };
+
+  var defineOfferPictures = function (element, elementParent) {
+    var popupPictures = elementParent.querySelector('.popup__pictures');
+    checkElement(element.length, popupPictures);
+    if (element.length > 4) {
       popupPictures.style = 'height: 145px; overflow-y: scroll';
     }
     var setImgAttr = function (inputImg, inputSrc) {
       inputImg.src = inputSrc;
       inputImg.width = OFFER_PIC_WIDTH;
       inputImg.height = OFFER_PIC_HEIGHT;
+      inputImg.draggable = true;
     };
     var fragment = document.createDocumentFragment();
     var photoItem = popupPictures.querySelector('li');
     var img = photoItem.querySelector('img');
-    for (var j = 0; j < array.length; j++) {
+    for (var j = 0; j < element.length; j++) {
       if (j === 0) {
-        setImgAttr(img, array[j]);
+        setImgAttr(img, element[j]);
       } else {
         var photoItemNew = photoItem.cloneNode(true);
         var imgNew = photoItemNew.querySelector('img');
-        setImgAttr(imgNew, array[j]);
+        setImgAttr(imgNew, element[j]);
         fragment.appendChild(photoItemNew);
       }
     }
@@ -54,7 +62,7 @@
   var fillCard = function (cardData, cardTemplate) {
     var offerType = {
       flat: 'Квартира',
-      bungalo: 'Бунгало',
+      bungalo: 'Сарай',
       house: 'Дом'
     };
 
@@ -67,7 +75,9 @@
 
     defineOfferFeature(cardData.offer.features, cardTemplate);
 
-    cardTemplate.querySelector('p:nth-of-type(5)').textContent = cardData.offer.description;
+    if (checkElement(cardData.offer.description, cardTemplate.querySelector('p:nth-of-type(5)'))) {
+      cardTemplate.querySelector('p:nth-of-type(5)').textContent = cardData.offer.description;
+    }
     cardTemplate.querySelector('.popup__avatar').src = cardData.author.avatar;
 
     defineOfferPictures(cardData.offer.photos, cardTemplate);
@@ -89,12 +99,9 @@
   };
 
   window.card = {
-    renderCard: function (obj) {
-      // create card
+    renderCard: function (cardData) {
       var cardElement = createCard();
-      // fill created Card
-      var card = fillCard(obj, cardElement);
-      // append filled card in DOM
+      var card = fillCard(cardData, cardElement);
       appendCard(card);
     }
   };
