@@ -3,9 +3,9 @@
 (function () {
   var PIN_WIDTH = 65;
   var PIN_HEIGHT = 65;
-  var PIN_POINTER_HEIGHT = 22;
-  var PIN_TOP_LIMIT = 150;
-  var PIN_BOTTOM_LIMIT = 500;
+  var PIN_POINTER_HEIGHT = 16;
+  var PIN_TOP_LIMIT = 150 - Math.ceil(PIN_HEIGHT / 2) - PIN_POINTER_HEIGHT;
+  var PIN_BOTTOM_LIMIT = 500 - Math.ceil(PIN_HEIGHT / 2) - PIN_POINTER_HEIGHT;
 
   var template = document.querySelector('template').content;
   var mainPin = document.querySelector('.map__pin--main');
@@ -17,18 +17,18 @@
       y: evt.clientY + pageYOffset
     };
 
-    if (evt.clientX + pageXOffset >= containerCoords.right - PIN_WIDTH / 2) {
+    if (evt.clientX + pageXOffset >= containerCoords.right - Math.ceil(PIN_WIDTH / 2)) {
       coords.x = containerCoords.right - PIN_WIDTH / 2 + pageXOffset;
     }
-    if (evt.clientX + pageXOffset <= containerCoords.left + PIN_WIDTH / 2) {
+    if (evt.clientX + pageXOffset <= containerCoords.left + Math.ceil(PIN_WIDTH / 2)) {
       coords.x = containerCoords.left + PIN_WIDTH / 2 + pageXOffset;
     }
 
-    if (evt.clientY + pageYOffset >= PIN_BOTTOM_LIMIT - PIN_HEIGHT - PIN_POINTER_HEIGHT) {
-      coords.y = PIN_BOTTOM_LIMIT - PIN_HEIGHT - PIN_POINTER_HEIGHT;
+    if (evt.clientY + pageYOffset >= PIN_BOTTOM_LIMIT) {
+      coords.y = PIN_BOTTOM_LIMIT;
     }
-    if (evt.clientY + pageYOffset <= PIN_TOP_LIMIT - PIN_HEIGHT - PIN_POINTER_HEIGHT) {
-      coords.y = PIN_TOP_LIMIT - PIN_HEIGHT - PIN_POINTER_HEIGHT;
+    if (evt.clientY + pageYOffset <= PIN_TOP_LIMIT) {
+      coords.y = PIN_TOP_LIMIT;
     }
     return coords;
   };
@@ -75,13 +75,11 @@
 
     var onMouseUp = function (upEvt) {
       startCoords = getRestrictedCoords(upEvt, mapPins);
-      var shiftedUp = defineShiftedCoords(upEvt, mapPins);
-      document.removeEventListener('mousemove', onMouseMove);
+      mapPins.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
-      window.form.defineAdressValue(mainPin.offsetLeft - shiftedUp.x, mainPin.offsetTop - shiftedUp.y);
     };
 
-    document.addEventListener('mousemove', onMouseMove);
+    mapPins.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   });
 

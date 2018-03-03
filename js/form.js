@@ -92,7 +92,7 @@
     adress: adress,
     resetNoticeForm: resetNoticeForm,
     defineAdressValue: function (x, y) {
-      adress.value = Math.round(x + window.pin.PIN_WIDTH / 2) + ', ' + (Math.round(y) + window.pin.PIN_POINTER_HEIGHT + window.pin.PIN_HEIGHT);
+      adress.value = Math.round(x) + ', ' + (Math.round(y) + window.pin.PIN_POINTER_HEIGHT + Math.ceil(window.pin.PIN_HEIGHT / 2));
     },
     setAdressDefaultValue: function (value) {
       if (value === 'active') {
