@@ -59,9 +59,9 @@
 
   var minRank = 0;
 
-  var update = function (adsData) {
+  var update = function () {
     window.popup.closePopup();
-    var arr = adsData.slice();
+    var arr = window.filter.adsData.slice();
     var deleteAds = function () {
       var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
       [].forEach.call(pins, function (elem) {
@@ -140,8 +140,8 @@
       'guestsFlag': true
     };
   };
-
-  window.fiter = {
+  window.filter = {
+    adsData: [],
     activateFiltering: activateFiltering,
     deactivateFiltering: deactivateFiltering
   };
