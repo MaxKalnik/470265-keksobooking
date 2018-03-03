@@ -1,6 +1,15 @@
 'use strict';
 
 (function () {
+  var PRICE_VALUES = {
+    LOW_MIN: 0,
+    LOW_MAX: 10000,
+    MIDDLE_MAX: 50000,
+    low: 'low',
+    middle: 'middle',
+    high: 'high'
+  };
+
   var filterValues = {
     'type': '',
     'price': '',
@@ -11,15 +20,6 @@
     'priceFlag': true,
     'roomsFlag': true,
     'guestsFlag': true
-  };
-
-  var PRICE_VALUES = {
-    LOW_MIN: 0,
-    LOW_MAX: 10000,
-    MIDDLE_MAX: 50000,
-    low: 'low',
-    middle: 'middle',
-    high: 'high'
   };
 
   var checkPrice = function (val) {
