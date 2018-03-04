@@ -6,54 +6,42 @@
     post: 'https://js.dump.academy/keksobooking'
   };
 
-  window.backend = {
-    load: function (onLoad, onError) {
-      var xhr = new XMLHttpRequest();
-      xhr.responseType = 'json';
+  var createXhr = function (formData, onLoadFunc, onErrorFunc) {
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'json';
 
-      xhr.addEventListener('load', function () {
-        if (xhr.status === 200) {
-          onLoad(xhr.response);
-        } else {
-          onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
-        }
-      });
+    xhr.addEventListener('load', function () {
+      if (xhr.status === 200) {
+        onLoadFunc(xhr.response);
+      } else {
+        onErrorFunc('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
+      }
+    });
 
-      xhr.addEventListener('error', function () {
-        onError('Произошла ошибка');
-      });
+    xhr.addEventListener('error', function () {
+      onErrorFunc('Произошла ошибка');
+    });
 
-      xhr.addEventListener('timeout', function () {
-        onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
-      });
+    xhr.addEventListener('timeout', function () {
+      onErrorFunc('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
+    });
 
-      xhr.responseTime = 1000;
+    xhr.responseTime = 1000;
+    if (formData) {
+      xhr.open('POST', URL.post);
+      xhr.send(formData);
+    } else {
       xhr.open('GET', URL.get);
       xhr.send();
+    }
+  };
+
+  window.backend = {
+    load: function (onLoad, onError) {
+      createXhr(false, onLoad, onError);
     },
     save: function (data, onLoad, onError) {
-      var xhr = new XMLHttpRequest();
-      xhr.responseType = 'json';
-
-      xhr.addEventListener('load', function () {
-        if (xhr.status === 200) {
-          onLoad(xhr.response);
-        } else {
-          onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
-        }
-      });
-
-      xhr.addEventListener('error', function () {
-        onError('Произошла ошибка');
-      });
-
-      xhr.addEventListener('timeout', function () {
-        onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
-      });
-
-      xhr.timeout = 1000;
-      xhr.open('POST', URL.post);
-      xhr.send(data);
+      createXhr(data, onLoad, onError);
     },
     onError: function (errMessage) {
       var errorContainer = document.createElement('div');

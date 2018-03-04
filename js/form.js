@@ -7,10 +7,10 @@
   var adress = noticeForm.querySelector('#address');
 
   var disableForm = function (boolFlag) {
-    var fieldset = noticeForm.querySelectorAll('fieldset');
-    for (var i = 0; i < fieldset.length; i++) {
-      fieldset[i].disabled = boolFlag;
-    }
+    var fieldsets = noticeForm.querySelectorAll('fieldset');
+    [].forEach.call(fieldsets, function (fieldset) {
+      fieldset.disabled = boolFlag;
+    });
   };
 
   var setPriceInputMax = function () {
@@ -47,21 +47,21 @@
     var noGuests = capacity.querySelector('option[value="0"]');
     noGuests.disabled = true;
 
-    for (var i = 0; i < guests.length; i++) {
+    [].forEach.call(guests, function (elem) {
       if (+roomNumber.value === 100) {
-        guests[i].disabled = true;
+        elem.disabled = true;
         noGuests.disabled = false;
-      } else if (+roomNumber.value < guests[i].value && +guests[i].value !== 0) {
-        guests[i].disabled = true;
-        guests[i].selected = false;
+      } else if (+roomNumber.value < elem.value && +elem.value !== 0) {
+        elem.disabled = true;
+        elem.selected = false;
       } else {
-        guests[i].disabled = false;
+        elem.disabled = false;
         noGuests.disabled = true;
       }
       if (capacity.querySelector('option:not(:disabled)')) {
         capacity.querySelector('option:not(:disabled)').selected = true;
       }
-    }
+    });
   };
 
   var resetNoticeForm = function () {
@@ -70,6 +70,7 @@
     activateFormValidation();
     window.map.showMapFilters(false);
     window.avatar.clearPreview();
+    window.avatar.clearPhotos();
   };
 
   var activateFormValidation = function () {
