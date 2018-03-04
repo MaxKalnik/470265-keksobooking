@@ -2,6 +2,12 @@
 
 (function () {
   var ADRESS_INITIAL_Y = 375;
+  var PRICE = {
+    bungalo: 0,
+    flat: 1000,
+    house: 5000,
+    palace: 10000
+  };
 
   var noticeForm = document.querySelector('.notice__form');
   var adress = noticeForm.querySelector('#address');
@@ -17,14 +23,8 @@
     var priceInput = noticeForm.querySelector('#price');
     var placeTypeInput = noticeForm.querySelector('#type');
     var type = placeTypeInput.value;
-    var price = {
-      bungalo: 0,
-      flat: 1000,
-      house: 5000,
-      palace: 10000
-    };
-    priceInput.setAttribute('min', price['' + type]);
-    priceInput.setAttribute('placeholder', price['' + type]);
+    priceInput.setAttribute('min', PRICE['' + type]);
+    priceInput.setAttribute('placeholder', PRICE['' + type]);
   };
 
   var syncTiming = function (evt) {

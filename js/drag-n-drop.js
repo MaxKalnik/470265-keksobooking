@@ -20,12 +20,10 @@
         var target = evt.target;
         if (target && target !== dragEl && target.tagName.toLowerCase() === 'img') {
           pictures.insertBefore(dragEl, pictures.children[0] !== target && target.nextSibling || target);
-        }
-        else if (dragEl === pictures.children[0]) {
+        } else if (dragEl === pictures.children[0]) {
           try {
             target.insertAdjacentElement('beforeend', dragEl);
-          }
-          catch(error) {
+          } catch (error) {
             return;
           }
         }

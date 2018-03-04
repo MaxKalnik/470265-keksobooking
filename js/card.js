@@ -3,6 +3,11 @@
 (function () {
   var OFFER_PIC_WIDTH = 95;
   var OFFER_PIC_HEIGHT = 70;
+  var OFFER_TYPE = {
+    flat: 'Квартира',
+    bungalo: 'Сарай',
+    house: 'Дом'
+  };
 
   var template = document.querySelector('template').content;
 
@@ -60,16 +65,10 @@
   };
 
   var fillCard = function (cardData, cardTemplate) {
-    var offerType = {
-      flat: 'Квартира',
-      bungalo: 'Сарай',
-      house: 'Дом'
-    };
-
     cardTemplate.querySelector('h3').textContent = cardData.offer.title;
     cardTemplate.querySelector('small').textContent = cardData.offer.address;
     cardTemplate.querySelector('.popup__price').textContent = cardData.offer.price + ' ₽/ночь';
-    cardTemplate.querySelector('h4').textContent = offerType['' + cardData.offer.type];
+    cardTemplate.querySelector('h4').textContent = OFFER_TYPE['' + cardData.offer.type];
     cardTemplate.querySelector('p:nth-of-type(3)').textContent = cardData.offer.rooms + ' комнаты для ' + cardData.offer.guests + ' гостей';
     cardTemplate.querySelector('p:nth-of-type(4)').textContent = 'Заезд после ' + cardData.offer.checkin + ', выезд до ' + cardData.offer.checkout;
 
