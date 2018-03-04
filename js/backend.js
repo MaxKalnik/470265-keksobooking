@@ -1,17 +1,15 @@
 'use strict';
 
 (function () {
-  var URL = {
-    get: 'https://js.dump.academy/keksobooking/data',
-    post: 'https://js.dump.academy/keksobooking'
-  };
+  var SUCESS_STATUS = 200;
+  var XHR_RESPONSE_TIME = 1000;
 
-  var createXhr = function (formData, onLoadFunc, onErrorFunc) {
+  var createXhr = function (type, url, onLoadFunc, onErrorFunc, formData) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
+      if (xhr.status === SUCESS_STATUS) {
         onLoadFunc(xhr.response);
       } else {
         onErrorFunc('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
@@ -26,22 +24,17 @@
       onErrorFunc('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
 
-    xhr.responseTime = 1000;
-    if (formData) {
-      xhr.open('POST', URL.post);
-      xhr.send(formData);
-    } else {
-      xhr.open('GET', URL.get);
-      xhr.send();
-    }
+    xhr.responseTime = XHR_RESPONSE_TIME;
+    xhr.open(type, url);
+    xhr.send(formData ? formData : null);
   };
 
   window.backend = {
-    load: function (onLoad, onError) {
-      createXhr(false, onLoad, onError);
+    load: function (type, url, onLoad, onError) {
+      createXhr(type, url, onLoad, onError);
     },
-    save: function (data, onLoad, onError) {
-      createXhr(data, onLoad, onError);
+    save: function (type, url, onLoad, onError, formData) {
+      createXhr(type, url, onLoad, onError, formData);
     },
     onError: function (errMessage) {
       var errorContainer = document.createElement('div');
@@ -56,6 +49,14 @@
         }, 400);
       };
       setTimeout(removeNode, 1500);
+    },
+    Methods: {
+      get: 'GET',
+      post: 'POST'
+    },
+    Url: {
+      get: 'https://js.dump.academy/keksobooking/data',
+      post: 'https://js.dump.academy/keksobooking'
     }
   };
 

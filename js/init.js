@@ -27,7 +27,7 @@
   var makeStateActive = function () {
     window.map.mapElement.classList.remove('map--faded');
     window.form.makeFormActive();
-    window.backend.load(onSuccessLoad, window.backend.onError);
+    window.backend.load(window.backend.Methods.get, window.backend.Url.get, onSuccessLoad, window.backend.onError);
     window.pin.mainPin.removeEventListener('mousedown', onMainPinMousedown);
     window.form.resetButton.addEventListener('click', makeStateInactive);
     window.form.resetButton.addEventListener('click', window.map.removeAllPins);
@@ -55,10 +55,10 @@
       window.utils.onEnterPress(keydownEvt, makeStateActive);
     });
     window.form.noticeForm.addEventListener('submit', function (evt) {
-      window.backend.save(new FormData(window.form.noticeForm), function () {
+      window.backend.save(window.backend.Methods.post, window.backend.Url.post, function () {
         window.form.resetNoticeForm();
         makeStateInactive();
-      }, window.backend.onError);
+      }, window.backend.onError, new FormData(window.form.noticeForm));
       evt.preventDefault();
     });
   };
