@@ -50,11 +50,7 @@
       };
       setTimeout(removeNode, 1500);
     },
-    Methods: {
-      get: 'GET',
-      post: 'POST'
-    },
-    Url: {
+    url: {
       get: 'https://js.dump.academy/keksobooking/data',
       post: 'https://js.dump.academy/keksobooking'
     }
