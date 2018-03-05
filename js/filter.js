@@ -62,13 +62,7 @@
   var update = function () {
     window.popup.closePopup();
     var arr = window.filter.adsData.slice();
-    var deleteAds = function () {
-      var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-      [].forEach.call(pins, function (elem) {
-        elem.remove();
-      });
-    };
-    deleteAds();
+    window.map.removeAllPins();
 
     window.pin.renderPin(arr.filter(function (elem) {
       return getRank(elem) >= minRank;

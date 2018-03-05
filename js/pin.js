@@ -100,7 +100,7 @@
     for (var i = 0; i < pins.length && i < 5; i++) {
       fragmentPin.appendChild(pins[i]);
     }
-    document.querySelector('.map__pins').appendChild(fragmentPin);
+    mapPins.appendChild(fragmentPin);
   };
 
   var renderPin = function (pinData) {

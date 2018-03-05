@@ -19,9 +19,10 @@
     });
   };
 
+  var placeTypeInput = noticeForm.querySelector('#type');
+
   var setPriceInputMax = function () {
     var priceInput = noticeForm.querySelector('#price');
-    var placeTypeInput = noticeForm.querySelector('#type');
     var type = placeTypeInput.value;
     priceInput.setAttribute('min', Price['' + type.toUpperCase()]);
     priceInput.setAttribute('placeholder', Price['' + type.toUpperCase()]);
@@ -40,8 +41,9 @@
     }
   };
 
+  var roomNumber = document.querySelector('#room_number');
+
   var validateCapacity = function () {
-    var roomNumber = document.querySelector('#room_number');
     var capacity = document.querySelector('#capacity');
     var guests = capacity.querySelectorAll('option');
     var noGuests = capacity.querySelector('option[value="0"]');
@@ -73,18 +75,20 @@
     window.avatar.clearPhotos();
   };
 
+  var timingFieldset = document.querySelector('.form__element--timing');
+
   var activateFormValidation = function () {
     setPriceInputMax();
-    noticeForm.querySelector('#type').addEventListener('change', setPriceInputMax);
-    document.querySelector('.form__element--timing').addEventListener('change', syncTiming, true);
+    placeTypeInput.addEventListener('change', setPriceInputMax);
+    timingFieldset.addEventListener('change', syncTiming, true);
     validateCapacity();
-    document.querySelector('#room_number').addEventListener('change', validateCapacity);
+    roomNumber.addEventListener('change', validateCapacity);
   };
 
   var deactivateFormValidation = function () {
-    noticeForm.querySelector('#type').removeEventListener('change', setPriceInputMax);
-    document.querySelector('.form__element--timing').removeEventListener('change', syncTiming, true);
-    document.querySelector('#room_number').removeEventListener('change', validateCapacity);
+    placeTypeInput.removeEventListener('change', setPriceInputMax);
+    timingFieldset.removeEventListener('change', syncTiming, true);
+    roomNumber.removeEventListener('change', validateCapacity);
   };
 
   window.form = {
