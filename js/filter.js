@@ -21,6 +21,7 @@
     'roomsFlag': true,
     'guestsFlag': true
   };
+  var minRank = 0;
 
   var checkPrice = function (val) {
     if (val >= PRICE_VALUES.LOW_MIN && val < PRICE_VALUES.LOW_MAX) {
@@ -56,8 +57,6 @@
     }
     return rank;
   };
-
-  var minRank = 0;
 
   var update = function () {
     window.popup.closePopup();

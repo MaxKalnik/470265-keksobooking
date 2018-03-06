@@ -11,7 +11,6 @@
       active = true;
     };
     document.addEventListener('mousemove', onMainPinMousemove);
-
     document.addEventListener('mouseup', function () {
       document.removeEventListener('mousemove', onMainPinMousemove);
     });

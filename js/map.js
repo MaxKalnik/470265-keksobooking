@@ -5,7 +5,9 @@
     visible: '1',
     hidden: '0'
   };
+
   var mapFilters = document.querySelector('.map__filters');
+
   window.map = {
     mapElement: document.querySelector('.map'),
     removeAllPins: function () {

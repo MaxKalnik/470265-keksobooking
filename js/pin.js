@@ -9,6 +9,7 @@
 
   var template = document.querySelector('template').content;
   var mainPin = document.querySelector('.map__pin--main');
+  var mapPins = document.querySelector('.map__pins');
 
   var getRestrictedCoords = function (evt, canvas) {
     var containerCoords = canvas.getBoundingClientRect();
@@ -42,8 +43,6 @@
       height: box.height
     };
   };
-
-  var mapPins = document.querySelector('.map__pins');
 
   mainPin.addEventListener('mousedown', function (evt) {
     var shiftX = evt.clientX + pageXOffset - (getCoords(mainPin).left + getCoords(mainPin).width / 2);

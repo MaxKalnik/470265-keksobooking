@@ -11,6 +11,9 @@
 
   var noticeForm = document.querySelector('.notice__form');
   var adress = noticeForm.querySelector('#address');
+  var placeTypeInput = noticeForm.querySelector('#type');
+  var roomNumber = document.querySelector('#room_number');
+  var timingFieldset = document.querySelector('.form__element--timing');
 
   var disableForm = function (boolFlag) {
     var fieldsets = noticeForm.querySelectorAll('fieldset');
@@ -18,8 +21,6 @@
       fieldset.disabled = boolFlag;
     });
   };
-
-  var placeTypeInput = noticeForm.querySelector('#type');
 
   var setPriceInputMax = function () {
     var priceInput = noticeForm.querySelector('#price');
@@ -40,8 +41,6 @@
       }
     }
   };
-
-  var roomNumber = document.querySelector('#room_number');
 
   var validateCapacity = function () {
     var capacity = document.querySelector('#capacity');
@@ -74,8 +73,6 @@
     window.avatar.clearPreview();
     window.avatar.clearPhotos();
   };
-
-  var timingFieldset = document.querySelector('.form__element--timing');
 
   var activateFormValidation = function () {
     setPriceInputMax();

@@ -8,6 +8,8 @@
 
   var fileChooser = document.querySelector('#avatar');
   var preview = document.querySelector('.notice__preview img');
+  var photoFileChooser = document.querySelector('#images');
+  var photoContainer = document.querySelector('.form__photo-container');
 
   fileChooser.addEventListener('change', function () {
     var file = fileChooser.files[0];
@@ -24,9 +26,6 @@
       reader.readAsDataURL(file);
     }
   });
-
-  var photoFileChooser = document.querySelector('#images');
-  var photoContainer = document.querySelector('.form__photo-container');
 
   var createImg = function (imgSrc) {
     var img = document.createElement('img');
