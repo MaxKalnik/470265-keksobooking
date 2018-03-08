@@ -10,6 +10,7 @@
     high: 'high'
   };
 
+  var features = document.querySelector('#housing-features');
   var filterValues = {
     'type': '',
     'price': '',
@@ -91,7 +92,6 @@
     }
   };
 
-  var features = document.querySelector('#housing-features');
   var featuresOnChange = function (evt) {
     if (evt.target.type === 'checkbox') {
       if (evt.target.checked) {

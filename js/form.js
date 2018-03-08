@@ -14,24 +14,25 @@
   var placeTypeInput = noticeForm.querySelector('#type');
   var roomNumber = document.querySelector('#room_number');
   var timingFieldset = document.querySelector('.form__element--timing');
+  var fieldsets = noticeForm.querySelectorAll('fieldset');
+  var priceInput = noticeForm.querySelector('#price');
+  var timeInInput = document.querySelector('#timein');
+  var timeOutInput = document.querySelector('#timeout');
+  var capacity = document.querySelector('#capacity');
 
   var disableForm = function (boolFlag) {
-    var fieldsets = noticeForm.querySelectorAll('fieldset');
     [].forEach.call(fieldsets, function (fieldset) {
       fieldset.disabled = boolFlag;
     });
   };
 
   var setPriceInputMax = function () {
-    var priceInput = noticeForm.querySelector('#price');
     var type = placeTypeInput.value;
     priceInput.setAttribute('min', Price['' + type.toUpperCase()]);
     priceInput.setAttribute('placeholder', Price['' + type.toUpperCase()]);
   };
 
   var syncTiming = function (evt) {
-    var timeInInput = document.querySelector('#timein');
-    var timeOutInput = document.querySelector('#timeout');
     if (evt.target.tagName.toLowerCase() === 'select') {
       var value = evt.target.value;
       if (evt.target.id === 'timein') {
@@ -43,7 +44,6 @@
   };
 
   var validateCapacity = function () {
-    var capacity = document.querySelector('#capacity');
     var guests = capacity.querySelectorAll('option');
     var noGuests = capacity.querySelector('option[value="0"]');
     noGuests.disabled = true;

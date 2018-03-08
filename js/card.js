@@ -10,6 +10,7 @@
   };
 
   var template = document.querySelector('template').content;
+  var mapFiltersContainer = document.querySelector('.map__filters-container');
 
   var checkElement = function (element, elementContainer) {
     if (!element) {
@@ -85,14 +86,12 @@
   };
 
   var appendCard = function (card) {
-    var mapFiltersContainer = document.querySelector('.map__filters-container');
-
     var fragmentCard = document.createDocumentFragment();
-    var mapCards = document.querySelectorAll('.map__card');
+    var mapCard = document.querySelector('.map__card');
     fragmentCard.appendChild(card);
 
-    if (mapCards.length > 0) {
-      document.querySelector('.map').replaceChild(fragmentCard, mapCards[0]);
+    if (mapCard) {
+      document.querySelector('.map').replaceChild(fragmentCard, mapCard);
     }
     document.querySelector('.map').insertBefore(fragmentCard, mapFiltersContainer);
   };

@@ -62,7 +62,7 @@
       }
     }
     photoContainer.appendChild(imgContainer);
-    window.dragNDrop.uploadedImages();
+    window.dragNDrop.dragUploadedImages();
   });
 
   window.avatar = {
